@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: demo-app-v3
+  namespace: argocd
+spec:
+  destination:
+    namespace: demo-app-v3
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    helm:
+      parameters:
+      - name: replicaCount
+        value: "1"
+    path: demo-app/
+    repoURL: https://github.com/BorisovCloud/gitops-demo.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

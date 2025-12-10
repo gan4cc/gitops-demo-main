@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: demo-app-v5
+  namespace: argocd
+spec:
+  destination:
+    namespace: demo-app-v5-ns
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    helm:
+      valueFiles:
+      - ../app-v5.yaml
+    path: demo-app/
+    repoURL: https://github.com/BorisovCloud/gitops-demo.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
